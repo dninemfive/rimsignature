@@ -38,13 +38,13 @@ namespace RimSignature
                         return "D9RS_MidCapacity".Translate();
                     case 5:
                     case 6:
-                        return "D9RS_HighCapacity".Translate();
                     case 7:
-                        return "D9RS_LegCapacity".Translate();
+                        return "D9RS_HighCapacity".Translate();
                     default: return null;
                 }
             }
         }
+        public bool DestroyOnZeroCharges => !(Rechargeable || SelfCharging);
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -73,16 +73,23 @@ namespace RimSignature
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
-            yield return new Gizmo_ChargeCounter
+            if(MaxCharges > 1) yield return new Gizmo_ChargeCounter{ comp = this };
+            if (Prefs.DevMode) yield return new Command_Action
             {
-                comp = this
+                action = () => TryUseCharge()
             };
         }
         public override string TransformLabel(string label)
         {
             string prefix = CapacityStr ?? "";
-            if (Rechargeable) prefix += " " + "D9RS_Rechargeable".Translate();
-            if (SelfCharging) prefix += " " + "D9RS_SelfCharging".Translate();
+            if (Rechargeable && SelfCharging) {
+                prefix += " " + "D9RS_SelfReCharging".Translate();
+            }
+            else
+            {
+                if (Rechargeable) prefix += " " + "D9RS_Rechargeable".Translate();
+                if (SelfCharging) prefix += " " + "D9RS_SelfCharging".Translate();
+            }
             string postfix = (Rechargeable || SelfCharging) ? "(" + Charges + "/" + MaxCharges + ")" : "(" + Charges + ")";
             if (prefix.Length > 0) label = prefix + " " + label;
             return label + " " + postfix;
@@ -92,10 +99,17 @@ namespace RimSignature
             if (Rechargeable || SelfCharging) return "D9RS_ChargesRemainingChargeable".Translate(Charges, MaxCharges);
             return "D9RS_ChargesRemaining".Translate(Charges);
         }
+        public bool TryUseCharge()
+        {
+            if (Charges <= 0) return false;
+            Charges--;
+            if (DestroyOnZeroCharges && Charges <= 0) base.parent.SplitOff(1).Destroy();
+            return true;
+        }
     }
     public class CompProperties_Chargeable : CompProperties
     {
-        public IntRange allowedChargeRange;
+        public IntRange allowedChargeRange = new IntRange(1, 7);
         // for the following, Awful = 1 and Legendary = 7
         public SimpleCurve minChargeCurve = new SimpleCurve
             {
@@ -131,5 +145,10 @@ namespace RimSignature
                 new CurvePoint(3, 0.05f),
                 new CurvePoint(7, 0.1f)
             };
+
+        public CompProperties_Chargeable()
+        {
+            base.compClass = typeof(CompChargeable);
+        }
     }
 }

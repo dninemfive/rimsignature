@@ -1,0 +1,8 @@
+C:\Users\dninemfive\Documents\mods\Rimworld\F1.0\RimSignature\Source\RimSignature\bin\Debug\RimSignature.dll
+C:\Users\dninemfive\Documents\mods\Rimworld\F1.0\RimSignature\Source\RimSignature\bin\Debug\RimSignature.pdb
+C:\Users\dninemfive\Documents\mods\Rimworld\F1.0\RimSignature\Source\RimSignature\obj\Debug\RimSignature.csprojResolveAssemblyReference.cache
+C:\Users\dninemfive\Documents\mods\Rimworld\F1.0\RimSignature\Source\RimSignature\obj\Debug\RimSignature.csproj.CoreCompileInputs.cache
+C:\Users\dninemfive\Documents\mods\Rimworld\F1.0\RimSignature\Source\RimSignature\obj\Debug\RimSignature.dll
+C:\Users\dninemfive\Documents\mods\Rimworld\F1.0\RimSignature\Source\RimSignature\obj\Debug\RimSignature.pdb
+C:\Users\dninemfive\Documents\mods\Rimworld\F1.0\RimSignature\Assemblies\RimSignature.dll
+C:\Users\dninemfive\Documents\mods\Rimworld\F1.0\RimSignature\Assemblies\RimSignature.pdb

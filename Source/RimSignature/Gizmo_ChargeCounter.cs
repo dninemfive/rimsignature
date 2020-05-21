@@ -14,7 +14,7 @@ namespace RimSignature
         // identical to the shield belt full/empty bar textures
         private static readonly Texture2D ChargeTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.24f));
         private static readonly Texture2D MissingChargeTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.15f, 0.15f, 0.18f));
-        private static readonly Texture2D BlankTex = SolidColorMaterials.NewSolidColorTexture(Color.clear);
+        private static readonly Texture2D BgTex = SolidColorMaterials.NewSolidColorTexture(Widgets.WindowBGFillColor);
         private const int SpacingWidth = 4;
         private const float minWidth = 100f, maxWidth = 200f, defaultWidth = 140f;
 
@@ -24,9 +24,9 @@ namespace RimSignature
         }
         public override float GetWidth(float maxWidth)
         {
-            int charges = comp.Charges;
+            int charges = comp.MaxCharges;
             if (charges == 1) return defaultWidth;
-            return Mathf.Clamp(defaultWidth + (20*(comp.Charges-4)),
+            return Mathf.Clamp(defaultWidth + (20*(comp.MaxCharges-4)),
                 minWidth, maxWidth);
         }
         public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth)
@@ -54,6 +54,8 @@ namespace RimSignature
                 return;
             }
             else if (numBoxes == 1) return; // 1 is supported but no boxes drawn
+            // draw box of background color to hide excess label information
+            GUI.DrawTexture(inRect, BgTex);
             float w_b = (inRect.width - (SpacingWidth * (numBoxes - 1))) / numBoxes;
             int width = (int)w_b, offset = (int)(((w_b - width) * numBoxes)/2);
             float xPos = inRect.position.x + offset;

@@ -34,6 +34,32 @@
 			<li>
 				<compClass>CompQuality</compClass>
 			</li>
+			<li Class="RimSignature.CompProperties_Chargeable"/>
 		</comps>
 	</ThingDef>
+	<!--======= Teleporters =======-->
+	<!--======= Hackers =======-->
+	<ThingDef ParentName="D9RS_ItemBase">
+		<defName>D9RS_Subverter</defName>
+		<label>subverter</label>
+		<description>TODO</description>
+		<verbs>
+		  <li>
+			<verbClass>Verb_Bombardment</verbClass>
+			<hasStandardCommand>true</hasStandardCommand>
+			<warmupTime>3</warmupTime>
+			<ai_AvoidFriendlyFireRadius>23</ai_AvoidFriendlyFireRadius>
+			<ai_IsBuildingDestroyer>true</ai_IsBuildingDestroyer>
+			<range>44.9</range>
+			<burstShotCount>1</burstShotCount>
+			<soundAiming>OrbitalTargeter_Aiming</soundAiming>
+			<soundCast>OrbitalTargeter_Fire</soundCast>
+			<onlyManualCast>true</onlyManualCast>
+			<targetParams>
+			  <canTargetLocations>true</canTargetLocations>
+			</targetParams>
+		  </li>
+	    </verbs>
+	</ThingDef>
+	<!--======= Traps =======-->
 </Defs>
