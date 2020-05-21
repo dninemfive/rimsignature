@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- ThingCategory for the mod -->
+	<ThingCategoryDef>
+      <defName>D9RS_ItemCat</defName>
+      <label>Gadgets</label>
+      <parent>Items</parent>
+    </ThingCategoryDef>
+	<!-- Base def -->
+	<ThingDef ParentName="BaseWeapon" Name="D9RS_ItemBase" Abstract="True">
+		<thingCategories>
+		  <li>D9RS_ItemCat</li>
+		</thingCategories>
+		<graphicData>
+		  <texPath>Things/Item/Equipment/WeaponSpecial/OrbitalTargeter</texPath>
+		  <graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+		  <MarketValue>1200</MarketValue>
+		  <Mass>0.2</Mass>
+		  <Beauty>-3</Beauty>
+		  <Flammability>0.5</Flammability>
+		</statBases>
+		<techLevel>Spacer</techLevel>
+		<tradeability>All</tradeability>
+		<soundInteract>Standard_Pickup</soundInteract>
+		<tradeTags>
+		  <li>ExoticMisc</li>
+		</tradeTags>
+		<thingSetMakerTags>
+		  <li>RewardStandardHighFreq</li>
+		</thingSetMakerTags>
+		<comps Inherit="True">
+			<li>
+				<compClass>CompQuality</compClass>
+			</li>
+		</comps>
+	</ThingDef>
+</Defs>
