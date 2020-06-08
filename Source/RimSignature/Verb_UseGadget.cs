@@ -10,7 +10,7 @@ namespace RimSignature
 {
     public abstract class Verb_UseGadget : Verb
     {
-        CompChargeable Comp => EquipmentSource?.TryGetComp<CompChargeable>() ?? null;
+        CompGadget Comp => EquipmentSource?.TryGetComp<CompGadget>() ?? null;
 
         protected override bool TryCastShot()
         {

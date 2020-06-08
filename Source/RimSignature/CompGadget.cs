@@ -9,9 +9,9 @@ using RimWorld;
 
 namespace RimSignature
 {
-    public class CompChargeable : ThingComp
+    public class CompGadget : ThingComp
     {
-        CompProperties_Chargeable Props => (CompProperties_Chargeable)base.props;
+        CompProperties_Gadget Props => (CompProperties_Gadget)base.props;
         private int charges;
         public int Charges {
             get => charges;
@@ -70,14 +70,25 @@ namespace RimSignature
                 SelfCharging = true;
             }
         }
+        public static int Modifier = 10;
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
-            if(MaxCharges > 1) yield return new Gizmo_ChargeCounter{ comp = this };
-            if (Prefs.DevMode) yield return new Command_Action
+            /*if(MaxCharges > 1)*/ yield return new Gizmo_ChargeCounter{ comp = this };
+            if (Prefs.DevMode)
             {
-                action = () => TryUseCharge()
-            };
+                yield return new Command_Action
+                {
+                    action = () => TryUseCharge(),
+                    defaultLabel = "remove charge"
+                };
+                yield return new Command_Action
+                {
+                    action = () => Modifier++,
+                    defaultLabel = "adjust modifier",
+                    defaultDesc = "" + Modifier
+                };
+            }
         }
         public override string TransformLabel(string label)
         {
@@ -107,15 +118,13 @@ namespace RimSignature
             return true;
         }
     }
-    public class CompProperties_Chargeable : CompProperties
+    public class CompProperties_Gadget : CompProperties
     {
         public IntRange allowedChargeRange = new IntRange(1, 7);
         // for the following, Awful = 1 and Legendary = 7
         public SimpleCurve minChargeCurve = new SimpleCurve
             {
                 new CurvePoint(1, 1),
-                //new CurvePoint(2, 1), // these get lerped in anyway
-                //new CurvePoint(3, 1),
                 new CurvePoint(4, 1),
                 new CurvePoint(5, 2),
                 new CurvePoint(6, 3),
@@ -146,9 +155,9 @@ namespace RimSignature
                 new CurvePoint(7, 0.1f)
             };
 
-        public CompProperties_Chargeable()
+        public CompProperties_Gadget()
         {
-            base.compClass = typeof(CompChargeable);
+            base.compClass = typeof(CompGadget);
         }
     }
 }

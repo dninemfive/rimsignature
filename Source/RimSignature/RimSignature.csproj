@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="CompChargeable.cs" />
     <Compile Include="Gizmo_ChargeCounter.cs" />
+    <Compile Include="ITab_CompChargeableProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Verb_UseGadget.cs" />
   </ItemGroup>

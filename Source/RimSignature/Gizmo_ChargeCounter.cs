@@ -10,7 +10,7 @@ namespace RimSignature
 {
     class Gizmo_ChargeCounter : Gizmo
     {
-        public CompChargeable comp;
+        public CompGadget comp;
         // identical to the shield belt full/empty bar textures
         private static readonly Texture2D ChargeTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.2f, 0.2f, 0.24f));
         private static readonly Texture2D MissingChargeTex = SolidColorMaterials.NewSolidColorTexture(new Color(0.15f, 0.15f, 0.18f));
@@ -25,9 +25,8 @@ namespace RimSignature
         public override float GetWidth(float maxWidth)
         {
             int charges = comp.MaxCharges;
-            if (charges == 1) return defaultWidth;
-            return Mathf.Clamp(defaultWidth + (20*(comp.MaxCharges-4)),
-                minWidth, maxWidth);
+            return Mathf.Clamp(defaultWidth + (CompGadget.Modifier*(comp.MaxCharges-4)),
+                               minWidth, maxWidth);
         }
         public override GizmoResult GizmoOnGUI(Vector2 topLeft, float maxWidth)
         {
@@ -41,23 +40,22 @@ namespace RimSignature
             Widgets.Label(half, comp.parent.LabelCap);
             Rect boxContainer = inside;
             boxContainer.yMin = inside.y + inside.height / 2f;
-            int charges = comp.MaxCharges;
             DrawBoxes(boxContainer, comp.Charges, comp.MaxCharges);
-            // write number of charges? gonna be in the desc anyway tho
             return new GizmoResult(GizmoState.Clear);
         }
         private void DrawBoxes(Rect inRect, int numFilled, int numBoxes)
         {
-            if (numBoxes < 1 || numBoxes > 7)
+            if (numBoxes < 1)
             {
                 Log.Error("[RimSignature] Gizmo_ChargeCounter.DrawBoxes called with an unsupported number, " + numBoxes);
                 return;
             }
-            else if (numBoxes == 1) return; // 1 is supported but no boxes drawn
+            // else if (numBoxes == 1) return; // 1 is supported but no boxes drawn
             // draw box of background color to hide excess label information
             GUI.DrawTexture(inRect, BgTex);
             float w_b = (inRect.width - (SpacingWidth * (numBoxes - 1))) / numBoxes;
-            int width = (int)w_b, offset = (int)(((w_b - width) * numBoxes)/2);
+            int width = (int)w_b, 
+                offset = (int)(((w_b - width) * numBoxes)/2);
             float xPos = inRect.position.x + offset;
             for(int i = 1; i <= numBoxes; i++)
             {

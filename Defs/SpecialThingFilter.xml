@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <SpecialThingFilterDef>
+    <defName>D9RS_AllowRechargeable</defName>
+    <label>allow rechargeable</label>
+    <description>Allow rechargeable gadgets.</description>
+    <parentCategory>D9RS_ItemCat</parentCategory>
+    <allowedByDefault>true</allowedByDefault>
+    <saveKey>d9rs_allowRechargeable</saveKey>
+    <workerClass>RimSignature.SpecialThingFilterWorker_Rechargeable</workerClass>
+  </SpecialThingFilterDef>
+  <SpecialThingFilterDef>
+    <defName>D9RS_AllowNonRechargeable</defName>
+    <label>allow non-rechargeable</label>
+    <description>Allow non-rechargeable gadgets.</description>
+    <parentCategory>D9RS_ItemCat</parentCategory>
+    <allowedByDefault>true</allowedByDefault>
+    <saveKey>d9rs_allowRechargeable</saveKey>
+    <workerClass>RimSignature.SpecialThingFilterWorker_NotRechargeable</workerClass>
+  </SpecialThingFilterDef>
+</Defs>
