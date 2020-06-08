@@ -13,6 +13,8 @@ namespace RimSignature
         Building_Storage Storage => base.parent as Building_Storage;
         IEnumerable<Thing> ThingsToCharge => Storage.slotGroup.HeldThings;
         public CompProperties_Charger Props => (CompProperties_Charger)base.props;
+        CompPowerTrader Power => base.parent.TryGetComp<CompPowerTrader>();
+        CompRefuelable Fuel => base.parent.TryGetComp<CompRefuelable>();
 
         #region cheap hash interval stuff
         private int hashOffset = 0;
@@ -28,14 +30,22 @@ namespace RimSignature
         public override void CompTick()
         {
             base.CompTick();
-            if (IsCheapIntervalTick(Props.Interval))
+            if(Storage == null)
             {
+                string err = "[RimSignature] CompCharger on a Thing which is not a Building_Storage!";
+                Log.ErrorOnce(err, err.GetHashCode());
+                return;
+            }
+            if (IsCheapIntervalTick(Props.Interval) && (Fuel == null || Fuel.HasFuel) && (Power == null || Power.PowerOn))
+            {
+                Power.PowerOutput = -1 * Props.PowerUsePerGadget * ThingsToCharge.Count();
                 foreach(Thing t in ThingsToCharge)
                 {
                     CompGadget cg;
                     if((cg = t.TryGetComp<CompGadget>()) != null && cg.Rechargeable)
                     {
                         cg.Charges += Props.ChargesToRestore;
+                        if (Fuel != null) Fuel.ConsumeFuel(Props.FuelPerRecharge);
                     }
                 }
             }
@@ -44,8 +54,10 @@ namespace RimSignature
     class CompProperties_Charger : CompProperties
     {
 #pragma warning disable CS0649
-        public int Interval;
-        public int ChargesToRestore;
+        public int Interval = 250;
+        public int ChargesToRestore = 1;
+        public float PowerUsePerGadget = 500f;
+        public float FuelPerRecharge = 0f;
 #pragma warning restore CS0649
         public CompProperties_Charger()
         {
