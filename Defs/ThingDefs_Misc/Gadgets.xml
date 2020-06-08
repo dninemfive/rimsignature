@@ -34,7 +34,7 @@
 			<li>
 				<compClass>CompQuality</compClass>
 			</li>
-			<li Class="RimSignature.CompProperties_Chargeable"/>
+			<li Class="RimSignature.CompProperties_Gadget"/>
 		</comps>
 	</ThingDef>
 	<!--======= Teleporters =======-->
@@ -45,10 +45,9 @@
 		<description>TODO</description>
 		<verbs>
 		  <li>
-			<verbClass>Verb_Bombardment</verbClass>
+			<verbClass>RimSignature.Verb_Subvert</verbClass>
 			<hasStandardCommand>true</hasStandardCommand>
 			<warmupTime>3</warmupTime>
-			<ai_AvoidFriendlyFireRadius>23</ai_AvoidFriendlyFireRadius>
 			<ai_IsBuildingDestroyer>true</ai_IsBuildingDestroyer>
 			<range>44.9</range>
 			<burstShotCount>1</burstShotCount>
@@ -56,7 +55,12 @@
 			<soundCast>OrbitalTargeter_Fire</soundCast>
 			<onlyManualCast>true</onlyManualCast>
 			<targetParams>
-			  <canTargetLocations>true</canTargetLocations>
+			  <canTargetLocations>false</canTargetLocations>
+			  <canTargetPawns>true</canTargetPawns>
+			  <canTargetBuildings>true</canTargetBuildings>
+			  <canTargetItems>true</canTargetItems>
+			  <canTargetMechs>true</canTargetMechs>
+			  <canTargetAnimals>false</canTargetAnimals>			  
 			</targetParams>
 		  </li>
 	    </verbs>
