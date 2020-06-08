@@ -38,7 +38,7 @@ namespace RimSignature
             }
             if (IsCheapIntervalTick(Props.Interval) && (Fuel == null || Fuel.HasFuel) && (Power == null || Power.PowerOn))
             {
-                Power.PowerOutput = -1 * Props.PowerUsePerGadget * ThingsToCharge.Count();
+                int rechargedCount = 0;
                 foreach(Thing t in ThingsToCharge)
                 {
                     CompGadget cg;
@@ -48,6 +48,7 @@ namespace RimSignature
                         if (Fuel != null) Fuel.ConsumeFuel(Props.FuelPerRecharge);
                     }
                 }
+                Power.PowerOutput = -1 * Props.PowerUsePerGadget * rechargedCount;
             }
         }
     }
