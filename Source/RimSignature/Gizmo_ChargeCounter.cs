@@ -8,6 +8,7 @@ using Verse;
 
 namespace RimSignature
 {
+    [StaticConstructorOnStartup]
     class Gizmo_ChargeCounter : Gizmo
     {
         public CompGadget comp;

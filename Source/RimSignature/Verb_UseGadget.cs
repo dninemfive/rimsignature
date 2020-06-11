@@ -20,11 +20,27 @@ namespace RimSignature
     }
     public class Verb_Subvert : Verb_UseGadget
     {
+        public Verb_Subvert() : base()
+        {
+            TargetingParameters tp = targetParams;
+            tp.validator = delegate (TargetInfo x)
+            {
+                return CouldEverChangeFaction(x) || HasBiocodableEqOrApparel(x);
+            };
+            VerbProperties vp = verbProps;
+            vp.targetParams = tp;
+            verbProps = vp;
+        }
+
         protected override bool TryCastShot()
         {
-            if (!base.TryCastShot()) return false;
+            if (!targetParams.validator(CurrentTarget.ToTargetInfo(CurrentTarget.Thing.Map)) || !base.TryCastShot()) return false;
             // make turrets join your team
-            if (CurrentTarget.Thing is Building_Turret tur && tur.def.CanHaveFaction) tur.SetFactionDirect(Caster.Faction);
+            if (CurrentTarget.Thing is Building_Turret tur && tur.def.CanHaveFaction)
+            {
+                tur.SetFactionDirect(Caster.Faction);
+                Log.Message("turret subverted! New faction is " + tur.Faction + ".");
+            }
             // unlock autodoors
             if (CurrentTarget.Thing is Building_Door door && door.def.CanHaveFaction && door.TryGetComp<CompPower>() != null) door.SetFactionDirect(Caster.Faction);
             if (CurrentTarget.Thing is Pawn pawn)
@@ -37,8 +53,19 @@ namespace RimSignature
                 if (pawn.def.race.FleshType == FleshTypeDefOf.Mechanoid) pawn.SetFactionDirect(Caster.Faction);
             }
             CompExplosive explosive = CurrentTarget.Thing.TryGetComp<CompExplosive>();
-            if (explosive != null) explosive.StartWick();
+            if (explosive != null) explosive.parent.SetFactionDirect(Caster.Faction);
             return true;
+        }
+        public bool CouldEverChangeFaction(TargetInfo x)
+        {
+            return (x.Thing is Building_Turret tur && tur.def.CanHaveFaction) ||
+                   (x.Thing is Building_Door door && door.def.CanHaveFaction) ||
+                   (x.Thing is Pawn pawn && pawn.def.race.FleshType == FleshTypeDefOf.Mechanoid) ||
+                   (x.Thing.TryGetComp<CompExplosive>() != null && x.Thing.def.CanHaveFaction);
+        }
+        public bool HasBiocodableEqOrApparel(TargetInfo ti)
+        {
+            return ti.Thing is Pawn pawn && pawn.equipment.AllEquipmentListForReading.Any(x => x.TryGetComp<CompBiocodable>() != null) && pawn.apparel.WornApparel.Any(x => x.TryGetComp<CompBiocodable>() != null);
         }
         public static void SubvertBiocodedWeapons(Pawn target, Pawn subverter)
         {

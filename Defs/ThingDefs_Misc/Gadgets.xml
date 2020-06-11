@@ -49,11 +49,13 @@
 			<hasStandardCommand>true</hasStandardCommand>
 			<warmupTime>3</warmupTime>
 			<ai_IsBuildingDestroyer>true</ai_IsBuildingDestroyer>
-			<range>44.9</range>
+			<range>100</range>
 			<burstShotCount>1</burstShotCount>
 			<soundAiming>OrbitalTargeter_Aiming</soundAiming>
 			<soundCast>OrbitalTargeter_Fire</soundCast>
 			<onlyManualCast>true</onlyManualCast>
+			<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+			<requireLineOfSight>false</requireLineOfSight>
 			<targetParams>
 			  <canTargetLocations>false</canTargetLocations>
 			  <canTargetPawns>true</canTargetPawns>
