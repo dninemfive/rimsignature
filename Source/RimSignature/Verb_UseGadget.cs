@@ -22,12 +22,16 @@ namespace RimSignature
     {
         public Verb_Subvert() : base()
         {
-            TargetingParameters tp = targetParams;
+            Log.Message("Be cool, honey bunny");
+            TargetingParameters tp = verbProps.targetParams ?? new TargetingParameters();
+            Log.Message("Be cool.");
             tp.validator = delegate (TargetInfo x)
             {
                 return CouldEverChangeFaction(x) || HasBiocodableEqOrApparel(x);
             };
+            Log.Message("Nothing's gonna happen.");
             VerbProperties vp = verbProps;
+            Log.Message("Just put the gun down.");
             vp.targetParams = tp;
             verbProps = vp;
         }
