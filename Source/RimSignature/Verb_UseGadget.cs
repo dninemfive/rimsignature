@@ -20,7 +20,7 @@ namespace RimSignature
     }
     public class Verb_Subvert : Verb_UseGadget
     {
-        public Verb_Subvert() : base()
+        /*public Verb_Subvert() : base()
         {
             Log.Message("Be cool, honey bunny");
             TargetingParameters tp = verbProps.targetParams ?? new TargetingParameters();
@@ -34,7 +34,7 @@ namespace RimSignature
             Log.Message("Just put the gun down.");
             vp.targetParams = tp;
             verbProps = vp;
-        }
+        }*/
 
         protected override bool TryCastShot()
         {
@@ -59,18 +59,7 @@ namespace RimSignature
             CompExplosive explosive = CurrentTarget.Thing.TryGetComp<CompExplosive>();
             if (explosive != null) explosive.parent.SetFactionDirect(Caster.Faction);
             return true;
-        }
-        public bool CouldEverChangeFaction(TargetInfo x)
-        {
-            return (x.Thing is Building_Turret tur && tur.def.CanHaveFaction) ||
-                   (x.Thing is Building_Door door && door.def.CanHaveFaction) ||
-                   (x.Thing is Pawn pawn && pawn.def.race.FleshType == FleshTypeDefOf.Mechanoid) ||
-                   (x.Thing.TryGetComp<CompExplosive>() != null && x.Thing.def.CanHaveFaction);
-        }
-        public bool HasBiocodableEqOrApparel(TargetInfo ti)
-        {
-            return ti.Thing is Pawn pawn && pawn.equipment.AllEquipmentListForReading.Any(x => x.TryGetComp<CompBiocodable>() != null) && pawn.apparel.WornApparel.Any(x => x.TryGetComp<CompBiocodable>() != null);
-        }
+        }        
         public static void SubvertBiocodedWeapons(Pawn target, Pawn subverter)
         {
             Pawn_EquipmentTracker eqTracker = target.equipment;
