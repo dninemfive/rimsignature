@@ -12,7 +12,7 @@ namespace RimSignature
     {
         public override bool CanTarget(TargetInfo target, Thing caster)
         {
-            if (target.Thing?.Faction == caster.Faction)
+            if (target.Thing?.Faction == caster?.Faction)
             {
                 Messages.Message("D9RS_TargetSameFaction".Translate(), new LookTargets(target, caster), MessageTypeDefOf.NeutralEvent, false);
                 return false;
@@ -27,7 +27,7 @@ namespace RimSignature
             }
             return true;
         }
-        // TODO: sound effect when successfully subverting
+        // TODO: throw motes when successfully subverting
         public override void DoEffect(TargetInfo target, Thing caster)
         {
             // make turrets join your team

@@ -58,6 +58,8 @@ namespace RimSignature
                 Generate(quality);
                 Charges = MaxCharges;
             }
+            // get first verb of type Verb_UseGadget and set its validator to use CanTarget. Hacky, but should work.
+            base.parent.def.Verbs.Where(x => x.verbClass == typeof(Verb_UseGadget)).First().targetParams.validator = delegate(TargetInfo ti) { return CanTarget(ti); } ;
         }
 
         public void Generate(QualityCategory quality)
@@ -128,7 +130,7 @@ namespace RimSignature
             return true;
         }
 
-        public abstract bool CanTarget(TargetInfo target, Thing caster);
+        public abstract bool CanTarget(TargetInfo target, Thing caster = null);
         public abstract void DoEffect(TargetInfo target, Thing caster);
     }
     public class CompProperties_Gadget : CompProperties
