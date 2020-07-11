@@ -34,7 +34,6 @@
 			<li>
 				<compClass>CompQuality</compClass>
 			</li>
-			<li Class="RimSignature.CompProperties_Gadget"/>
 		</comps>
 	</ThingDef>
 	<!--======= Teleporters =======-->
@@ -45,7 +44,7 @@
 		<description>TODO</description>
 		<verbs>
 		  <li>
-			<verbClass>RimSignature.Verb_Subvert</verbClass>
+			<verbClass>RimSignature.Verb_UseGadget</verbClass>
 			<hasStandardCommand>true</hasStandardCommand>
 			<warmupTime>3</warmupTime>
 			<ai_IsBuildingDestroyer>true</ai_IsBuildingDestroyer>
@@ -56,16 +55,13 @@
 			<onlyManualCast>true</onlyManualCast>
 			<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
 			<requireLineOfSight>false</requireLineOfSight>
-			<targetParams>
-			  <canTargetLocations>false</canTargetLocations>
-			  <canTargetPawns>true</canTargetPawns>
-			  <canTargetBuildings>true</canTargetBuildings>
-			  <canTargetItems>true</canTargetItems>
-			  <canTargetMechs>true</canTargetMechs>
-			  <canTargetAnimals>false</canTargetAnimals>			  
-			</targetParams>
 		  </li>
 	    </verbs>
+		<comps>
+			<li Class="RimSignature.CompProperties_Gadget">
+				<compClass>RimSignature.CompGadget_Subverter</compClass>
+			</li>
+		</comps>
 	</ThingDef>
 	<!--======= Traps =======-->
 </Defs>

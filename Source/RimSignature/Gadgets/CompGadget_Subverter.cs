@@ -23,8 +23,11 @@ namespace RimSignature
                 target.Thing.TryGetComp<CompExplosive>() != null))
             {
                 Messages.Message("D9RS_SubvertInvalidTarget".Translate(), new LookTargets(target, caster), MessageTypeDefOf.NeutralEvent, false);
+                return false;
             }
+            return true;
         }
+        // TODO: sound effect when successfully subverting
         public override void DoEffect(TargetInfo target, Thing caster)
         {
             // make turrets join your team
@@ -38,7 +41,8 @@ namespace RimSignature
             if (target.Thing is Pawn targetPawn)
             {
                 // code biocoded weapons and apparel to the caster
-                if (caster is Pawn casterPawn) SubvertBiocodedWeapons(targetPawn, casterPawn);
+                // TODO: check to make sure pawn has biocoded gear
+                if (caster is Pawn casterPawn) SubvertBiocodedGear(targetPawn, casterPawn);
                 // if pawn is wearing shield belt, set class to custom inverted version if possible
                 // convert mechanoids to your team
                 // TODO: make this a chance instead of guaranteed, based on the mechanoid's health and max HP/combat strength
@@ -47,7 +51,7 @@ namespace RimSignature
             CompExplosive explosive = target.Thing.TryGetComp<CompExplosive>();
             if (explosive != null) explosive.parent.SetFactionDirect(caster.Faction);
         }
-        public static void SubvertBiocodedWeapons(Pawn target, Pawn subverter)
+        public static void SubvertBiocodedGear(Pawn target, Pawn subverter)
         {
             Pawn_EquipmentTracker eqTracker = target.equipment;
             foreach (Thing eq in eqTracker.AllEquipmentListForReading)

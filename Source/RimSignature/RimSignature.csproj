@@ -57,14 +57,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompCharger.cs" />
-    <Compile Include="CompGadget.cs" />
+    <Compile Include="Gadgets\CompGadget.cs" />
+    <Compile Include="Gadgets\CompGadget_Crasher.cs" />
+    <Compile Include="Gadgets\CompGadget_Subverter.cs" />
     <Compile Include="Gizmo_ChargeCounter.cs" />
     <Compile Include="ITab_CompChargeableProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecialThingFilters.cs" />
-    <Compile Include="VerbPropertySetter.cs" />
     <Compile Include="Verb_UseGadget.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del *.pdb

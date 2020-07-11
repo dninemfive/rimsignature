@@ -120,7 +120,7 @@ namespace RimSignature
 
         public bool TryUseCharge(TargetInfo target, Thing caster)
         {
-            if (!CanTarget(target)) return false;
+            if (!CanTarget(target, caster)) return false;
             if (Charges <= 0) return false;
             DoEffect(target, caster);
             Charges--;
@@ -167,10 +167,5 @@ namespace RimSignature
                 new CurvePoint(3, 0.05f),
                 new CurvePoint(7, 0.1f)
             };
-
-        public CompProperties_Gadget()
-        {
-            base.compClass = typeof(CompGadget);
-        }
     }
 }
