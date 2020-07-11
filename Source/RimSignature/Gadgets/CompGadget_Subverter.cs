@@ -10,11 +10,11 @@ namespace RimSignature
 {
     class CompGadget_Subverter : CompGadget
     {
-        public override bool CanTarget(TargetInfo target, Thing caster)
+        public override bool CanTarget(TargetInfo target, Thing caster, bool sendMessage = false)
         {
-            if (target.Thing?.Faction == caster?.Faction)
+            if (caster != null && target.Thing?.Faction == caster.Faction)
             {
-                Messages.Message("D9RS_TargetSameFaction".Translate(), new LookTargets(target, caster), MessageTypeDefOf.NeutralEvent, false);
+                if(sendMessage) Messages.Message("D9RS_TargetSameFaction".Translate(), new LookTargets(target, caster), MessageTypeDefOf.NeutralEvent, false);
                 return false;
             }
             if (!(target.Thing is Building_Turret || 
@@ -22,7 +22,7 @@ namespace RimSignature
                 target.Thing is Pawn || 
                 target.Thing.TryGetComp<CompExplosive>() != null))
             {
-                Messages.Message("D9RS_SubvertInvalidTarget".Translate(), new LookTargets(target, caster), MessageTypeDefOf.NeutralEvent, false);
+                if(sendMessage) Messages.Message("D9RS_SubvertInvalidTarget".Translate(), new LookTargets(target, caster), MessageTypeDefOf.NeutralEvent, false);
                 return false;
             }
             return true;

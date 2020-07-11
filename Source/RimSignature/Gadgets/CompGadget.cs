@@ -48,6 +48,8 @@ namespace RimSignature
         public bool DestroyOnZeroCharges => !(Rechargeable || SelfCharging);
         // adjusts width of gizmos
         public static int Modifier = 10;
+        // used to set validator
+        public VerbProperties parentProps;
         #endregion props/fields
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -59,7 +61,14 @@ namespace RimSignature
                 Charges = MaxCharges;
             }
             // get first verb of type Verb_UseGadget and set its validator to use CanTarget. Hacky, but should work.
-            base.parent.def.Verbs.Where(x => x.verbClass == typeof(Verb_UseGadget)).First().targetParams.validator = delegate(TargetInfo ti) { return CanTarget(ti); } ;
+            parentProps = base.parent.def.Verbs.Where(x => x.verbClass == typeof(Verb_UseGadget)).First();
+            parentProps.targetParams.validator = delegate (TargetInfo ti) { return CanTarget(ti); };
+        }
+
+        public override void Notify_Equipped(Pawn pawn)
+        {
+            // allow faction validation when possible
+            parentProps.targetParams.validator = delegate (TargetInfo ti) { return CanTarget(ti, pawn); };
         }
 
         public void Generate(QualityCategory quality)
@@ -130,7 +139,7 @@ namespace RimSignature
             return true;
         }
 
-        public abstract bool CanTarget(TargetInfo target, Thing caster = null);
+        public abstract bool CanTarget(TargetInfo target, Thing caster = null, bool sendMessage = false);
         public abstract void DoEffect(TargetInfo target, Thing caster);
     }
     public class CompProperties_Gadget : CompProperties
