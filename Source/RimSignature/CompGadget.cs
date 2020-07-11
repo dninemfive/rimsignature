@@ -9,8 +9,9 @@ using RimWorld;
 
 namespace RimSignature
 {
-    public class CompGadget : ThingComp
+    public abstract class CompGadget : ThingComp
     {
+        #region props/fields
         CompProperties_Gadget Props => (CompProperties_Gadget)base.props;
         private int charges;
         public int Charges {
@@ -45,6 +46,9 @@ namespace RimSignature
             }
         }
         public bool DestroyOnZeroCharges => !(Rechargeable || SelfCharging);
+        // adjusts width of gizmos
+        public static int Modifier = 10;
+        #endregion props/fields
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -55,6 +59,7 @@ namespace RimSignature
                 Charges = MaxCharges;
             }
         }
+
         public void Generate(QualityCategory quality)
         {
             int qualityInt = ((int)quality)+1;
@@ -70,18 +75,18 @@ namespace RimSignature
                 SelfCharging = true;
             }
         }
-        public static int Modifier = 10;
+        
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
-            /*if(MaxCharges > 1)*/ yield return new Gizmo_ChargeCounter{ comp = this };
+            yield return new Gizmo_ChargeCounter{ comp = this };
             if (Prefs.DevMode)
             {
-                yield return new Command_Action
+                /*yield return new Command_Action
                 {
-                    action = () => TryUseCharge(),
+                    action = () => TryUseCharge(null),
                     defaultLabel = "remove charge"
-                };
+                };*/
                 yield return new Command_Action
                 {
                     action = () => Modifier++,
@@ -90,6 +95,7 @@ namespace RimSignature
                 };
             }
         }
+
         public override string TransformLabel(string label)
         {
             string prefix = CapacityStr ?? "";
@@ -105,18 +111,25 @@ namespace RimSignature
             if (prefix.Length > 0) label = prefix + " " + label;
             return label + " " + postfix;
         }
+
         public override string CompInspectStringExtra()
         {
             if (Rechargeable || SelfCharging) return "D9RS_ChargesRemainingChargeable".Translate(Charges, MaxCharges);
             return "D9RS_ChargesRemaining".Translate(Charges);
         }
-        public bool TryUseCharge()
+
+        public bool TryUseCharge(TargetInfo target)
         {
+            if (!CanTarget(target)) return false;
             if (Charges <= 0) return false;
+            DoEffect(target);
             Charges--;
             if (DestroyOnZeroCharges && Charges <= 0) base.parent.SplitOff(1).Destroy();
             return true;
         }
+
+        public abstract bool CanTarget(TargetInfo target);
+        public abstract void DoEffect(TargetInfo target);
     }
     public class CompProperties_Gadget : CompProperties
     {
