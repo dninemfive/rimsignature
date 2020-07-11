@@ -118,18 +118,18 @@ namespace RimSignature
             return "D9RS_ChargesRemaining".Translate(Charges);
         }
 
-        public bool TryUseCharge(TargetInfo target)
+        public bool TryUseCharge(TargetInfo target, Thing caster)
         {
             if (!CanTarget(target)) return false;
             if (Charges <= 0) return false;
-            DoEffect(target);
+            DoEffect(target, caster);
             Charges--;
             if (DestroyOnZeroCharges && Charges <= 0) base.parent.SplitOff(1).Destroy();
             return true;
         }
 
-        public abstract bool CanTarget(TargetInfo target);
-        public abstract void DoEffect(TargetInfo target);
+        public abstract bool CanTarget(TargetInfo target, Thing caster);
+        public abstract void DoEffect(TargetInfo target, Thing caster);
     }
     public class CompProperties_Gadget : CompProperties
     {
