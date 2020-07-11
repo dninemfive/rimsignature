@@ -49,7 +49,7 @@ namespace RimSignature
         // adjusts width of gizmos
         public static int Modifier = 10;
         // used to set validator
-        public VerbProperties parentProps;
+        public VerbProperties ParentProps;
         #endregion props/fields
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -60,15 +60,17 @@ namespace RimSignature
                 Generate(quality);
                 Charges = MaxCharges;
             }
-            // get first verb of type Verb_UseGadget and set its validator to use CanTarget. Hacky, but should work.
-            parentProps = base.parent.def.Verbs.Where(x => x.verbClass == typeof(Verb_UseGadget)).First();
-            parentProps.targetParams.validator = delegate (TargetInfo ti) { return CanTarget(ti); };
+            // get first verb using Verb_UseGadget and therefrom its properties, cache it so we don't do this shit regularly
+            ParentProps = base.parent.TryGetComp<CompEquippable>().AllVerbs.Where(x => x.verbProps.verbClass == typeof(Verb_UseGadget)).First().verbProps;
+            ParentProps.targetParams.validator = delegate (TargetInfo ti) { return CanTarget(ti); };
         }
 
         public override void Notify_Equipped(Pawn pawn)
         {
             // allow faction validation when possible
-            parentProps.targetParams.validator = delegate (TargetInfo ti) { return CanTarget(ti, pawn); };
+            ParentProps.targetParams.validator = delegate (TargetInfo ti) { return CanTarget(ti, pawn); };
+            // TODO: remove association with pawn once dropped, needs Harmony patch probably
+            // apparently the vanilla game doesn't bother, so I might not either
         }
 
         public void Generate(QualityCategory quality)

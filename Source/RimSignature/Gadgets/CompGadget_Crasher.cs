@@ -10,11 +10,11 @@ namespace RimSignature
 {
     class CompGadget_Crasher : CompGadget
     {
-        public override bool CanTarget(TargetInfo target, Thing caster)
+        public override bool CanTarget(TargetInfo target, Thing caster, bool sendMessage = false)
         {
             if(target.Thing.TryGetComp<CompBreakdownable>() == null && target.Thing.TryGetComp<CompExplosive>() == null)
             {
-                Messages.Message("D9RS_CrashInvalidTarget".Translate(), new LookTargets(target, caster), MessageTypeDefOf.NeutralEvent, false);
+                if(sendMessage) Messages.Message("D9RS_CrashInvalidTarget".Translate(), new LookTargets(target, caster), MessageTypeDefOf.NeutralEvent, false);
             }
             return true;
         }
